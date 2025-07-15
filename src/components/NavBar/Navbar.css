@@ -1,0 +1,6 @@
+.navbar li {
+  @apply cursor-pointer;
+}
+.navbar option {
+  @apply text-white bg-[#09005c];
+}

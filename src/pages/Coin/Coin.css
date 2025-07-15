@@ -1,0 +1,7 @@
+.coin-info ul {
+  @apply flex justify-between py-[10px] px-[0px] border-b-[#5f5d5f] border-b-[1px];
+}
+
+.coin-info ul li:last-child {
+  @apply font-[300];
+}
