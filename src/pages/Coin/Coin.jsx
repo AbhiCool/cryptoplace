@@ -59,11 +59,9 @@ const Coin = () => {
   // console.log(coinId);
   if (loadingError) {
     return (
-      <div className="flex flex-col gap-[20px] items-center justify-center min-h-[70vh]">
-        <p className="font-[500] text-[20px] text-[orange]">
-          Error occured while fetching coins data.Please Try refreshing after
-          some time
-        </p>
+      <div className="flex flex-col gap-[10px] items-center justify-center min-h-[70vh] font-[500] text-[20px] text-[orange]">
+        <p className="">Error occured while fetching coins data.</p>
+        <p className="">Please try after some time</p>
       </div>
     );
   }

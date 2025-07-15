@@ -93,8 +93,8 @@ const Home = () => {
 
         {allCoinFetchingError ? (
           <div className="text-center text-[orange] p-2">
-            Error occured while fetching coins data.Please Try refreshing after
-            some time
+            <p>Error occured while fetching coins data.</p>
+            <p>Please try after some time</p>
           </div>
         ) : (
           displayCoin.slice(0, 10).map((coin) => (
