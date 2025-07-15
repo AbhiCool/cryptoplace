@@ -1,12 +1,15 @@
-# React + Vite
+# Cryptoplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cryptoplace is a mini-project built using React. It uses the external API from CoinGecko to get live data about different crypto coins.
 
-Currently, two official plugins are available:
+I used React hooks like useState for managing state, useEffect for fetching data from the API, and useContext to pass data to child components without prop drilling.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+For navigation between pages, I added React Router DOM. To show the last 10 days’ price changes of a cryptocurrency, I used React Google Charts to display a line chart.
 
-## Expanding the ESLint configuration
+I also used Tailwind CSS for styling the entire app. Tailwind helps build responsive and clean layouts easily, and makes sure the app looks good on both desktop and mobile screens.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The app has a home page that lists many cryptocurrencies with their prices and daily changes. You can click on a coin to see more details, like its description, market data, and a price chart.
+
+The project is deployed on Vercel.
+
+https://cryptoplace-tau.vercel.app/
