@@ -13,7 +13,7 @@ const Navbar = () => {
       case "usd":
         setCurrency({ ...currency, name: e.target.value, symbol: "$" });
         break;
-      case "euro":
+      case "eur":
         setCurrency({ ...currency, name: e.target.value, symbol: "€" });
         break;
       case "inr":
@@ -52,7 +52,7 @@ const Navbar = () => {
           onChange={handleOnChange}
         >
           <option value="usd">USD</option>
-          <option value="euro">EUR</option>
+          <option value="eur">EUR</option>
           <option value="inr">INR</option>
         </select>
         <button className="flex items-center gap-[8px] sm:gap-[10px] py-[8px] sm:py-[10px] px-[18px] sm:px-[25px] rounded-[20px] text-[14px] sm:text-[15px] font-[500] text-[#393939] bg-white border-none cursor-pointer">
