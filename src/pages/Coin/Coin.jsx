@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Coin.css";
 import { useParams } from "react-router-dom";
 import { CoinDataContext } from "../../context/CoinContext";
-import LineChart from "../../components/LineChart/LineChart";
+import LineChart from "../../components/lineChart/LineChart";
+import Spinner from "../../components/Spinner/Spinner";
+
 const Coin = () => {
   const { coinId } = useParams();
   const [coinData, setCoinData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
-
+  const [loadingError, setLoadingError] = useState(false);
   const { currency } = useContext(CoinDataContext);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const Coin = () => {
       console.log(res);
       setCoinData(res);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 
@@ -51,9 +53,20 @@ const Coin = () => {
       setHistoricalData(res);
     } catch (err) {
       console.error(err);
+      setLoadingError(true);
     }
   }
-  console.log(coinId);
+  // console.log(coinId);
+  if (loadingError) {
+    return (
+      <div className="flex flex-col gap-[20px] items-center justify-center min-h-[70vh]">
+        <p className="font-[500] text-[20px] text-[orange]">
+          Error occured while fetching coins data.Please Try refreshing after
+          some time
+        </p>
+      </div>
+    );
+  }
   if (coinData && historicalData) {
     return (
       <div className="coin py-[0px] px-[20px]">
@@ -108,11 +121,7 @@ const Coin = () => {
       </div>
     );
   } else {
-    return (
-      <div className="spinner grid place-self-center min-h-[80vh]">
-        <div className="spin w-[65px] h-[65px] place-self-center border-[5px] border-t-[#4500c6] rounded-[50%] animate-spin"></div>
-      </div>
-    );
+    return <Spinner height="min-h-80" />;
   }
 };
 

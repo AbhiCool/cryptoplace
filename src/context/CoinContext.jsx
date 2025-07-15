@@ -5,6 +5,7 @@ import { createContext } from "react";
 export const CoinDataContext = createContext();
 
 const CoinContext = ({ children }) => {
+  const [allCoinFetchingError, setAllCoinFetchingError] = useState(false);
   const [allCoin, setAllCoin] = useState([]);
   const [currency, setCurrency] = useState({
     name: "usd",
@@ -30,6 +31,7 @@ const CoinContext = ({ children }) => {
       setAllCoin(data);
     } catch (err) {
       console.log(err);
+      setAllCoinFetchingError(true);
     }
   }
 
@@ -37,6 +39,7 @@ const CoinContext = ({ children }) => {
     allCoin,
     currency,
     setCurrency,
+    allCoinFetchingError,
   };
   return (
     <CoinDataContext.Provider value={contextValue}>

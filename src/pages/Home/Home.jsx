@@ -3,10 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Home.css";
 import { CoinDataContext } from "../../context/CoinContext";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner/Spinner";
 
 const Home = () => {
   const [input, setInput] = useState("");
-  const { allCoin, currency } = useContext(CoinDataContext);
+  const { allCoin, currency, allCoinFetchingError } =
+    useContext(CoinDataContext);
 
   const [displayCoin, setDisplayCoin] = useState([]);
 
@@ -30,9 +32,9 @@ const Home = () => {
     }
   };
 
-  console.log("input", input);
-  console.log("allCoin", allCoin);
-  console.log("displayCoin", displayCoin);
+  // console.log("input", input);
+  // console.log("allCoin", allCoin);
+  // console.log("displayCoin", displayCoin);
   return (
     <div className="home py-[0px] px-[10px] pb-[100px]">
       <div className="hero max-w-[600px] mx-auto my-[80px] flex flex-col items-center text-center gap-[30px]">
@@ -87,37 +89,46 @@ const Home = () => {
           <p className="text-center">24H Change</p>
           <p className="text-right hidden sm:block">Market Cap</p>
         </div>
-        {displayCoin.slice(0, 10).map((coin) => (
-          <Link
-            to={"/coin/" + coin.id}
-            key={coin.id}
-            className="table-layout grid grid-cols-[0.5fr_3fr_1fr_1fr]
+        {!allCoin.length && !allCoinFetchingError && <Spinner />}
+
+        {allCoinFetchingError ? (
+          <div className="text-center text-[orange] p-2">
+            Error occured while fetching coins data.Please Try refreshing after
+            some time
+          </div>
+        ) : (
+          displayCoin.slice(0, 10).map((coin) => (
+            <Link
+              to={"/coin/" + coin.id}
+              key={coin.id}
+              className="table-layout grid grid-cols-[0.5fr_3fr_1fr_1fr]
             sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr] text-[#e3e3e3] py-[15px]
             px-[20px] items-center border-b-[1px] border-[#3c3c3c]
             last:border-none"
-          >
-            <p>{coin.market_cap_rank}</p>
-            <div className="flex items-center gap-[10px]">
-              <img src={coin.image} alt="" className="w-[35px] h-[35px]" />
-              <p>{coin.name}</p>
-            </div>
-            <p>
-              {currency.symbol} {coin.current_price.toLocaleString()}
-            </p>
-            <p
-              className={`text-center ${
-                coin.price_change_percentage_24h < 0
-                  ? "text-red-500"
-                  : "text-green-500"
-              }`}
             >
-              {coin.price_change_percentage_24h.toFixed(2)}%
-            </p>
-            <p className="text-right hidden sm:block">
-              {currency.symbol} {coin.market_cap.toLocaleString()}
-            </p>
-          </Link>
-        ))}
+              <p>{coin.market_cap_rank}</p>
+              <div className="flex items-center gap-[10px]">
+                <img src={coin.image} alt="" className="w-[35px] h-[35px]" />
+                <p>{coin.name}</p>
+              </div>
+              <p>
+                {currency.symbol} {coin.current_price.toLocaleString()}
+              </p>
+              <p
+                className={`text-center ${
+                  coin.price_change_percentage_24h < 0
+                    ? "text-red-500"
+                    : "text-green-500"
+                }`}
+              >
+                {coin.price_change_percentage_24h.toFixed(2)}%
+              </p>
+              <p className="text-right hidden sm:block">
+                {currency.symbol} {coin.market_cap.toLocaleString()}
+              </p>
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );
