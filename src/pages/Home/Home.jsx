@@ -51,7 +51,7 @@ const Home = () => {
           <input
             type="text"
             placeholder="Search coin..."
-            className="flex-1 text-[16px] outline-none border-none pl-[10px] text-black rounded-lg"
+            className="flex-1 text-[16px] outline-none border-none md:p-0 p-2 pl-[10px] text-black rounded-lg "
             value={input}
             onChange={handleCryptoSearch}
             required
