@@ -6,7 +6,7 @@ import LineChart from "../../components/lineChart/LineChart";
 import Spinner from "../../components/Spinner/Spinner";
 
 const Coin = () => {
-  const { coinId } = useParams();
+  const { coinId } = useParams(); // Example: btc-bitcoin
   const [coinData, setCoinData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
   const [loadingError, setLoadingError] = useState(false);
@@ -15,63 +15,67 @@ const Coin = () => {
   useEffect(() => {
     getCoinData();
     getHistoricalData();
-  }, [currency]);
+  }, [coinId, currency]);
 
   async function getCoinData() {
-    const url = "https://api.coingecko.com/api/v3/coins/" + coinId;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-api-key": "CG-UAGkTu3XN98QJsWNtS4S3XxD",
-      },
-    };
-
     try {
-      let res = await fetch(url, options);
-      res = await res.json();
-      console.log(res);
-      setCoinData(res);
-    } catch (err) {
-      // console.log(err);
-    }
-  }
-
-  async function getHistoricalData() {
-    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=10&interval=daily`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-api-key": "CG-UAGkTu3XN98QJsWNtS4S3XxD",
-      },
-    };
-
-    try {
-      let res = await fetch(url, options);
-      res = await res.json();
-      setHistoricalData(res);
+      const res = await fetch(
+        `https://api.coinpaprika.com/v1/tickers/${coinId}`
+      );
+      const data = await res.json();
+      setCoinData(data);
     } catch (err) {
       console.error(err);
       setLoadingError(true);
     }
   }
-  // console.log(coinId);
+
+  async function getHistoricalData() {
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
+
+    try {
+      const res = await fetch(
+        `https://api.coinpaprika.com/v1/tickers/${coinId}/historical?start=${startDate}&end=${endDate}&interval=1d`
+      );
+      const data = await res.json();
+
+      console.log("historicalData", data);
+      const newData = data.map((item) => {
+        return [new Date(item.timestamp), item.price];
+      });
+
+      newData.unshift(["Date", "Prices"]);
+      console.log("newData", newData);
+      setHistoricalData(newData);
+    } catch (err) {
+      console.error(err);
+      setLoadingError(true);
+    }
+  }
+
   if (loadingError) {
     return (
-      <div className="flex flex-col gap-[10px] items-center justify-center min-h-[70vh] font-[500] text-[20px] text-[orange]">
-        <p className="">Error occured while fetching coins data.</p>
-        <p className="">Please try after some time</p>
+      <div className="flex flex-col gap-[10px] items-center justify-center min-h-[70vh] font-[500] text-[orange] text-[20px]">
+        <p>Error occurred while fetching coin data.</p>
+        <p>Please try after some time</p>
       </div>
     );
   }
+
   if (coinData && historicalData) {
     return (
       <div className="coin py-[0px] px-[20px]">
         <div className="coin-name flex flex-col gap-[20px] items-center my-[100px] mx-auto mb-[50px]">
-          <img src={coinData?.image?.large} alt="" className="max-w-[100px]" />
+          <img
+            src={`https://cryptocurrencyliveprices.com/img/${coinId}.png`}
+            alt=""
+            className="max-w-[100px]"
+          />
           <p className="font-[500] text-[44px]">
-            {coinData?.name}({coinData?.symbol?.toUpperCase()})
+            {coinData.name} ({coinData.symbol})
           </p>
         </div>
         <div className="coin-chart max-w-[600px] m-auto h-[250px]">
@@ -79,40 +83,28 @@ const Coin = () => {
         </div>
 
         <div className="coin-info flex flex-col max-w-[600px] my-[50px] mx-auto">
-          <ul className="">
+          <ul>
             <li>Crypto Market Rank</li>
-            <li>{coinData?.market_cap_rank}</li>
+            <li>{coinData.rank}</li>
           </ul>
           <ul>
             <li>Current Price</li>
             <li>
-              {currency.symbol}{" "}
-              {coinData?.market_data?.current_price[
-                currency.name
-              ].toLocaleString()}
+              {currency.symbol} {coinData.quotes?.USD?.price.toFixed(2)}
             </li>
           </ul>
           <ul>
             <li>Market Cap</li>
             <li>
               {currency.symbol}{" "}
-              {coinData?.market_data?.market_cap[
-                currency.name
-              ].toLocaleString()}
+              {coinData.quotes?.USD?.market_cap.toLocaleString()}
             </li>
           </ul>
           <ul>
             <li>24 Hour High</li>
             <li>
               {currency.symbol}{" "}
-              {coinData?.market_data?.high_24h[currency.name].toLocaleString()}
-            </li>
-          </ul>
-          <ul>
-            <li>24 Hour Low</li>
-            <li>
-              {currency.symbol}{" "}
-              {coinData?.market_data?.low_24h[currency.name].toLocaleString()}
+              {coinData.quotes?.USD?.ath_price?.toLocaleString()}
             </li>
           </ul>
         </div>

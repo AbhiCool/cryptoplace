@@ -45,7 +45,7 @@ const Navbar = () => {
       </ul>
       <div className="nav-right flex  items-center " style={{ gap: "20px" }}>
         <select
-          className="text-white px-[5px] py-[8px] rounded-[6px] border-[2px] border-[white] bg-[transparent]"
+          className="hidden text-white px-[5px] py-[8px] rounded-[6px] border-[2px] border-[white] bg-[transparent]"
           name="currency"
           id=""
           onChange={handleOnChange}

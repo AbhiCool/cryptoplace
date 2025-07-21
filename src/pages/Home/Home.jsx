@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import "./Home.css";
 import { CoinDataContext } from "../../context/CoinContext";
 import { Link } from "react-router-dom";
@@ -32,9 +31,7 @@ const Home = () => {
     }
   };
 
-  // console.log("input", input);
-  // console.log("allCoin", allCoin);
-  // console.log("displayCoin", displayCoin);
+  console.log("displayCoin", displayCoin);
   return (
     <div className="home py-[0px] px-[10px] pb-[100px]">
       <div className="hero max-w-[600px] mx-auto my-[80px] flex flex-col items-center text-center gap-[30px]">
@@ -43,17 +40,16 @@ const Home = () => {
           Crypto Marketplace
         </h1>
         <p className="w-[75%] text-[#e3e3e3] leading-[1.5]">
-          Welcome to the largest input marketplace.Sign up to explore more
+          Welcome to the largest crypto marketplace. Sign up to explore more
           cryptos.
         </p>
         <form
           onSubmit={handleFormSubmit}
-          className="p-[8px] w-[80%] bg-white rounded-[5px] font-[20px] flex justify-between items-center gap-[10px] "
+          className="p-[8px] w-[80%] bg-white rounded-[5px] font-[20px] flex justify-between items-center gap-[10px]"
         >
           <input
             type="text"
-            name=""
-            placeholder="Search input.."
+            placeholder="Search coin..."
             className="flex-1 text-[16px] outline-none border-none pl-[10px] text-black"
             value={input}
             onChange={handleCryptoSearch}
@@ -77,11 +73,9 @@ const Home = () => {
       <div className="input-table max-w-[800px] m-auto bg-gradient-to-r from-[rgba(84,3,255,0.15)] to-[rgba(105,2,153,0.15)] rounded-[15px]">
         <div
           className="table-layout grid 
-        
-        grid-cols-[0.5fr_3fr_1fr_1fr]
-        sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr]
-        
-        text-[#e3e3e3] py-[15px] px-[20px] items-center border-b-[1px] border-[#3c3c3c]"
+          grid-cols-[0.5fr_3fr_1fr_1fr]
+          sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr]
+          text-[#e3e3e3] py-[15px] px-[20px] items-center border-b-[1px] border-[#3c3c3c]"
         >
           <p>#</p>
           <p>Coins</p>
@@ -89,39 +83,44 @@ const Home = () => {
           <p className="text-center">24H Change</p>
           <p className="text-right hidden sm:block">Market Cap</p>
         </div>
+
         {!allCoin.length && !allCoinFetchingError && <Spinner />}
 
         {allCoinFetchingError ? (
           <div className="text-center text-[orange] p-2">
-            <p>Error occured while fetching coins data.</p>
-            <p>Please try after some time</p>
+            <p>Error occurred while fetching coin data.</p>
+            <p>Please try again later.</p>
           </div>
         ) : (
-          displayCoin.slice(0, 10).map((coin) => (
+          displayCoin.slice(0, 10).map((coin, index) => (
             <Link
-              to={"/coin/" + coin.id}
+              to={`/coin/${coin.id}`}
               key={coin.id}
               className="table-layout grid grid-cols-[0.5fr_3fr_1fr_1fr]
-            sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr] text-[#e3e3e3] py-[15px]
-            px-[20px] items-center border-b-[1px] border-[#3c3c3c]
-            last:border-none"
+              sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr] text-[#e3e3e3] py-[15px]
+              px-[20px] items-center border-b-[1px] border-[#3c3c3c]
+              last:border-none"
             >
-              <p>{coin.market_cap_rank}</p>
+              <p>{index + 1}</p>
               <div className="flex items-center gap-[10px]">
-                <img src={coin.image} alt="" className="w-[35px] h-[35px]" />
+                <img
+                  src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
+                  className="w-[35px] h-[35px]"
+                  alt=""
+                />
                 <p>{coin.name}</p>
               </div>
               <p>
-                {currency.symbol} {coin.current_price.toLocaleString()}
+                {currency.symbol} {coin.price.toLocaleString(2)}
               </p>
               <p
                 className={`text-center ${
-                  coin.price_change_percentage_24h < 0
+                  coin.percent_change_24h < 0
                     ? "text-red-500"
                     : "text-green-500"
                 }`}
               >
-                {coin.price_change_percentage_24h.toFixed(2)}%
+                {coin.percent_change_24h.toFixed(2)}%
               </p>
               <p className="text-right hidden sm:block">
                 {currency.symbol} {coin.market_cap.toLocaleString()}

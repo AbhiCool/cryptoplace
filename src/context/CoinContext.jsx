@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { createContext } from "react";
+import React, { useEffect, useState, createContext } from "react";
 
 export const CoinDataContext = createContext();
 
@@ -18,19 +17,25 @@ const CoinContext = ({ children }) => {
 
   async function fetchAllCoin() {
     try {
-      let api = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`;
-
-      const res = await axios.get(api, {
-        headers: {
-          accept: "application/json",
-          "x-cg-api-key": "CG-UAGkTu3XN98QJsWNtS4S3XxD",
-        },
-      });
+      const api = "https://api.coinpaprika.com/v1/tickers";
+      const res = await axios.get(api);
       const data = res.data;
-      console.log("data", data);
-      setAllCoin(data);
+
+      // Optional: Convert to match your app's structure
+      const formattedData = data.map((coin) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol,
+        rank: coin.rank,
+        price: coin.quotes[currency.name.toUpperCase()]?.price || 0,
+        percent_change_24h:
+          coin.quotes[currency.name.toUpperCase()]?.percent_change_24h || 0,
+        market_cap: coin.quotes[currency.name.toUpperCase()]?.market_cap || 0,
+      }));
+
+      setAllCoin(formattedData);
     } catch (err) {
-      console.log(err);
+      console.error("CoinPaprika fetch error:", err);
       setAllCoinFetchingError(true);
     }
   }
@@ -41,6 +46,7 @@ const CoinContext = ({ children }) => {
     setCurrency,
     allCoinFetchingError,
   };
+
   return (
     <CoinDataContext.Provider value={contextValue}>
       {children}
