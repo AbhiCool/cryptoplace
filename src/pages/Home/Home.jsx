@@ -100,6 +100,11 @@ const Home = () => {
                   src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
                   className="w-[35px] h-[35px]"
                   alt=""
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://dummyimage.com/100x100/cccccc/000000&text=No+Image";
+                  }}
                 />
                 <p>{coin.name}</p>
               </div>
