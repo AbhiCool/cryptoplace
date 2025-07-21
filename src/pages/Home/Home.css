@@ -1,0 +1,8 @@
+.table-layout {
+  @apply grid 
+              grid-cols-[0.5fr_2.5fr_1.5fr_1fr]
+              sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr] 
+              text-[#e3e3e3] py-[15px]
+              px-[20px] items-center border-b-[1px] border-[#3c3c3c]
+              last:border-none;
+}

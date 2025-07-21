@@ -3,6 +3,7 @@ import "./Home.css";
 import { CoinDataContext } from "../../context/CoinContext";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
+import { FaSearch } from "react-icons/fa";
 
 const Home = () => {
   const [input, setInput] = useState("");
@@ -45,12 +46,12 @@ const Home = () => {
         </p>
         <form
           onSubmit={handleFormSubmit}
-          className="p-[8px] w-[80%] bg-white rounded-[5px] font-[20px] flex justify-between items-center gap-[10px]"
+          className="p-[8px] w-[80%] md:bg-white rounded-[5px] text-[20px] flex justify-between items-center gap-[10px] flex-col md:flex-row"
         >
           <input
             type="text"
             placeholder="Search coin..."
-            className="flex-1 text-[16px] outline-none border-none pl-[10px] text-black"
+            className="flex-1 text-[16px] outline-none border-none pl-[10px] text-black rounded-lg"
             value={input}
             onChange={handleCryptoSearch}
             required
@@ -65,18 +66,13 @@ const Home = () => {
             type="submit"
             className="border-none bg-[#7927ff] text-[16px] py-[10px] px-[30px] rounded-[5px] text-white cursor-pointer"
           >
-            Search
+            <FaSearch />
           </button>
         </form>
       </div>
 
       <div className="input-table max-w-[800px] m-auto bg-gradient-to-r from-[rgba(84,3,255,0.15)] to-[rgba(105,2,153,0.15)] rounded-[15px]">
-        <div
-          className="table-layout grid 
-          grid-cols-[0.5fr_3fr_1fr_1fr]
-          sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr]
-          text-[#e3e3e3] py-[15px] px-[20px] items-center border-b-[1px] border-[#3c3c3c]"
-        >
+        <div className="table-layout">
           <p>#</p>
           <p>Coins</p>
           <p>Price</p>
@@ -96,10 +92,7 @@ const Home = () => {
             <Link
               to={`/coin/${coin.id}`}
               key={coin.id}
-              className="table-layout grid grid-cols-[0.5fr_3fr_1fr_1fr]
-              sm:grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr] text-[#e3e3e3] py-[15px]
-              px-[20px] items-center border-b-[1px] border-[#3c3c3c]
-              last:border-none"
+              className="table-layout"
             >
               <p>{coin.rank}</p>
               <div className="flex items-center gap-[10px]">
