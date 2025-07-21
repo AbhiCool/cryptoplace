@@ -101,7 +101,7 @@ const Home = () => {
               px-[20px] items-center border-b-[1px] border-[#3c3c3c]
               last:border-none"
             >
-              <p>{index + 1}</p>
+              <p>{coin.rank}</p>
               <div className="flex items-center gap-[10px]">
                 <img
                   src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
